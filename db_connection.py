@@ -8,7 +8,7 @@ load_dotenv()
 def db_connection():
      try:
           conn = postgres.connect(
-               host=os.getenv("PG_HOST"),
+               host=os.getenv("DATABASE_URL"),
                database=os.getenv("PG_DATABASE"),
                user=os.getenv("PG_USER"),
                password=os.getenv("PG_PASSWORD"),
