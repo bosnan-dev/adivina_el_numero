@@ -7,8 +7,11 @@ from db_connection import db_connection
 
 # Configuración de la página
 st.set_page_config(page_title="🎮 Adivina el Número", page_icon="🎯", layout="centered")
+st.title("🤔 Juego Adivina el Número 🔢")
+st.markdown("---")
 
-# Imagen y enlaces
+
+# Logo-Imagen y enlaces
 col1, col2, col3 = st.columns([6, 6, 6])
 with col2:
     st.markdown("""
@@ -22,7 +25,7 @@ with col2:
 
     st.markdown("""
         <div style='text-align: center; margin-top: 10px;'>
-            <a href='https://github.com/bcordovag/adivina-el-numero' target='_blank' style='text-decoration: none; font-size: 20px; color: yellow; font-weight: bold;'>📥 Descarga el código fuente en GitHub</a>
+            <a href='https://github.com/bcordovag/adivina-el-numero' target='_blank' style='text-decoration: none; font-size: 20px; color: yellow; font-weight: bold;'>📥 Descarga el código fuente en GitHub 📥</a>
         </div>
     """, unsafe_allow_html=True)
 st.markdown("---")
@@ -32,11 +35,12 @@ try:
     Conexion, conexion = db_connection()
     st.success("✅ Conexión exitosa a la base de datos")
 except Exception as e:
-    st.error(f"❌ {e}")
+    st.error(f"❌ Error al conectar con la base de datos: {e}")
+    st.stop()
 st.markdown("---")
 
-# Mostrar ranking
-st.subheader("📊 Ranking de los Últimos 5 Jugadores")
+# Muestra ranking de últimas partidas
+st.subheader("📊 Ranking de los Últimos 5 Jugadores 📊")
 try:
     conexion.execute("SELECT nombre_apellido, pais, intentos, resultado, played_at FROM juego1 ORDER BY id DESC LIMIT 5")
     resultados = conexion.fetchall()
@@ -44,6 +48,8 @@ try:
     st.dataframe(df_resultados, use_container_width=True, hide_index=True)
 except Exception as e:
     st.error(f"❌ Error al obtener los datos: {e}")
+    st.stop()
+st.markdown("---")
 
 # Variables del juego
 for key, default in {
@@ -57,7 +63,7 @@ for key, default in {
         st.session_state[key] = default
 
 # Datos del jugador
-st.subheader("👤 Ingresa los datos en minúsculas para comenzar:")
+st.subheader("👤 Ingresa los datos solicitados en minúsculas para comenzar:")
 nombre_input = st.text_input("Nombre:", value=st.session_state.nombre)
 apellido_input = st.text_input("Apellido:", value=st.session_state.apellido)
 pais_input = st.text_input("País:", value=st.session_state.pais)
